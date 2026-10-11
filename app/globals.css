@@ -1,0 +1,212 @@
+@import "tailwindcss";
+
+@theme {
+  --color-blue-50: #fbf2f0;
+  --color-blue-100: #f6e4e1;
+  --color-blue-200: #eac7c2;
+  --color-blue-400: #c8756d;
+  --color-blue-500: #aa4942;
+  --color-blue-600: #91342e;
+  --color-blue-700: #762923;
+  --color-blue-900: #451916;
+}
+
+:root {
+  --background: #f4f1ee;
+  --foreground: #29231f;
+  --surface: #ffffff;
+  --surface-muted: #f8f6f4;
+  --border: #e7e0dc;
+  --brand: #91342e;
+  --brand-deep: #762923;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgb(145 52 46 / 5%), transparent 32rem),
+    var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+  transition: transform 150ms ease, background-color 180ms ease, color 180ms ease;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+button:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid rgb(145 52 46 / 30%);
+  outline-offset: 2px;
+}
+
+input,
+select,
+textarea {
+  max-width: 100%;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgb(145 52 46 / 10%);
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+table thead {
+  background: var(--surface-muted);
+}
+
+table th {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+}
+
+table tbody tr {
+  transition: background-color 150ms ease;
+}
+
+table tbody tr:hover {
+  background: #fbf7f5;
+}
+
+.data-table-scroll {
+  scrollbar-color: #c9bcb5 transparent;
+  scrollbar-width: thin;
+}
+
+.data-table-scroll:focus-visible {
+  outline: 3px solid rgb(145 52 46 / 30%);
+  outline-offset: 3px;
+}
+
+.data-table-scroll table {
+  min-width: 42rem;
+}
+
+::selection {
+  background: #f1d9d5;
+  color: #451916;
+}
+
+.startup-loader {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: var(--background);
+  color: #756a63;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.startup-spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid #eadbd7;
+  border-top-color: var(--brand);
+  border-radius: 9999px;
+  animation: spinner-rotate 800ms linear infinite;
+}
+
+@keyframes spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dashboard-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes login-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard-tab-content,
+.dashboard-panel-enter {
+  animation: dashboard-enter 280ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.login-brand-enter,
+.login-panel-enter {
+  animation: login-enter 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .startup-spinner {
+    animation: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .data-table-scroll table {
+    min-width: 42rem;
+  }
+
+  .data-table-scroll th,
+  .data-table-scroll td {
+    padding: 0.75rem 0.875rem;
+  }
+}
