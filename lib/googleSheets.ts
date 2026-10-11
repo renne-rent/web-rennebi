@@ -17,8 +17,41 @@ export type SheetName = typeof SHEET_NAMES[number];
 
 const spreadsheetId = "1hOoPnoP26jyuPKnpxTDcQY12nWjI7LGywlekbBbNUlk";
 const dateColumns = new Set(["tgl_mulai", "tgl_selesai", "tanggal", "created_at", "archived_at"]);
+const serviceAccountJson = process.env.GOOGLE_CREDENTIALS;
+
+function parseServiceAccountCredentials(value: string) {
+  let credentials: unknown;
+  try {
+    credentials = JSON.parse(value);
+  } catch (error) {
+    throw new Error("GOOGLE_CREDENTIALS harus berisi JSON service account yang valid.", { cause: error });
+  }
+
+  if (
+    typeof credentials !== "object"
+    || credentials === null
+    || !("client_email" in credentials)
+    || typeof credentials.client_email !== "string"
+    || !("private_key" in credentials)
+    || typeof credentials.private_key !== "string"
+  ) {
+    throw new Error("GOOGLE_CREDENTIALS harus memiliki client_email dan private_key.");
+  }
+
+  return {
+    client_email: credentials.client_email,
+    private_key: credentials.private_key,
+  };
+}
+
+if (process.env.VERCEL && !serviceAccountJson) {
+  throw new Error("GOOGLE_CREDENTIALS belum dikonfigurasi pada environment Vercel.");
+}
+
 const auth = new google.auth.GoogleAuth({
-  keyFile: path.resolve(process.cwd(), "renne-db-8dc44d24a856.json"),
+  ...(serviceAccountJson
+    ? { credentials: parseServiceAccountCredentials(serviceAccountJson) }
+    : { keyFile: path.resolve(process.cwd(), "renne-db-8dc44d24a856.json") }),
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 const sheets = google.sheets({ version: "v4", auth });

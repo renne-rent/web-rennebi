@@ -2,13 +2,14 @@
 
 ## Setup
 
-The server uses the Google Sheets API v4 with the service account key file `renne-db-8dc44d24a856.json` in the project root and the configured spreadsheet ID in `lib/googleSheets.ts`. Enable the Google Sheets API in the service account's Google Cloud project, then share the spreadsheet with the service account email with Editor access. Keep the key file private; it is excluded from Git.
+The server uses the Google Sheets API v4 and the configured spreadsheet ID in `lib/googleSheets.ts`. Enable the Google Sheets API in the service account's Google Cloud project, then share the spreadsheet with the service account email with Editor access. Keep the service account key private; it is excluded from Git.
 
 ```text
 SESSION_SECRET=your-private-random-session-secret
+GOOGLE_CREDENTIALS=<full contents of the service account JSON key>
 ```
 
-Do not commit or share `.env.local` or the service account key. On a hosted deployment, provide the service account key file securely at the project root (or use a managed secret-mounted file), configure `SESSION_SECRET`, and use HTTPS.
+For local development, place the service account key file at the project root as `renne-db-8dc44d24a856.json`; the `GOOGLE_CREDENTIALS` environment variable can be used instead. For Vercel, add `GOOGLE_CREDENTIALS` in **Project Settings > Environment Variables** and set its value to the complete contents of the service account JSON key. Add `SESSION_SECRET` there as well, select each environment where the app is deployed, and redeploy. Do not add either secret to Git or expose them in client-side variables such as `NEXT_PUBLIC_*`.
 
 Run the app locally with `npm.cmd run dev` on Windows or `npm run dev` elsewhere, then open [http://localhost:3000](http://localhost:3000).
 
